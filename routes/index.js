@@ -7,6 +7,14 @@ router.get("/", async (ctx) => {
   await ctx.render("index");
 });
 
+// 信息
+router.get("/info", async (ctx) => {
+  ctx.body = {
+    code: 200,
+    version: packageJson.version,
+    enable_flac: process.env.ENABLE_FLAC,
+  }
+}),
 // 测试
 router.get("/test", async (ctx) => {
   const data = await match(1962165898, [
