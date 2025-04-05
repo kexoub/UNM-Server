@@ -136,6 +136,66 @@ router.get("/ncmget", async (ctx) => {
   }
 });
 
+/* 网易云解灰tidal音源音乐获取
+十分感谢自GDStudio的音源API, 这里贴个链接: music.gdstudio.xyz
+*/
+// 下载路由
+router.get("/tidalget", async (ctx) => {
+  try {
+    const { name } = ctx.request.query; // 从请求参数获取 br
+    
+    // 参数验证
+    if (!name) {
+      ctx.status = 400;
+      ctx.body = { code: 400, message: "缺少必要参数 name" };
+      return;
+    }
+
+    // 构造tidal歌曲搜索 API 请求
+    const apiUrl = new URL("https://music-api.gdstudio.xyz/api.php");
+    apiUrl.searchParams.append("types", "search");
+    apiUrl.searchParams.append("source", "tidal");
+    apiUrl.searchParams.append("name", name);
+    apiUrl.searchParams.append("count", "1");
+    apiUrl.searchParams.append("pages", "1");
+    console.log("请求的url:", apiUrl);
+    const response = await fetch(apiUrl.toString());
+    if (!response.ok) throw new Error(`API 响应状态: ${response.status}`);
+    console.log("获得的搜索数据", response);
+    const result = await response.json();
+    const qqid = result[0].url_id;
+    const idurl = new URL("https://music-api.gdstudio.xyz/api.php");
+    idurl.searchParams.append("types", "url");
+    idurl.searchParams.append("source", "tidal");
+    idurl.searchParams.append("id", qqid);
+    idurl.searchParams.append("br", "999");
+    console.log("请求的音乐idUrl:", idurl)
+    const responseUrl = await fetch(idurl.toString());
+    if (!responseUrl.ok) throw new Error(`API 响应状态: ${responseUrl.status}`);
+    console.log("请求的音乐url结果:", responseUrl);
+    const resultUrl = await responseUrl.json();
+    console.log("获取的最终结果:", resultUrl);
+    // 构造音乐 URL 请求
+    ctx.body = {
+      code: 200,
+      message: "请求成功",
+      data: {
+        url: resultUrl.url,
+      }
+    };
+
+  } catch (error) {
+    console.error("下载请求失败:", error);
+    ctx.status = 500;
+    ctx.body = {
+      code: 500,
+      message: "服务器处理请求失败",
+      ...(process.env.NODE_ENV === "development" && { 
+        error: error.message 
+      })
+    };
+  }
+});
 // 404 路由
 router.use(async (ctx) => {
   await ctx.render("404");
