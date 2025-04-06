@@ -136,11 +136,11 @@ router.get("/ncmget", async (ctx) => {
   }
 });
 
-/* 网易云解灰tidal音源音乐获取
+/* 网易云解灰other音源音乐获取
 十分感谢自GDStudio的音源API, 这里贴个链接: music.gdstudio.xyz
 */
 // 下载路由
-router.get("/tidalget", async (ctx) => {
+router.get("/otherget", async (ctx) => {
   try {
     const { name } = ctx.request.query; // 从请求参数获取 br
     
@@ -151,10 +151,10 @@ router.get("/tidalget", async (ctx) => {
       return;
     }
 
-    // 构造tidal歌曲搜索 API 请求
+    // 构造other歌曲搜索 API 请求
     const apiUrl = new URL("https://music-api.gdstudio.xyz/api.php");
     apiUrl.searchParams.append("types", "search");
-    apiUrl.searchParams.append("source", "tidal");
+    apiUrl.searchParams.append("source", "kuwo");
     apiUrl.searchParams.append("name", name);
     apiUrl.searchParams.append("count", "1");
     apiUrl.searchParams.append("pages", "1");
@@ -166,7 +166,7 @@ router.get("/tidalget", async (ctx) => {
     const qqid = result[0].url_id;
     const idurl = new URL("https://music-api.gdstudio.xyz/api.php");
     idurl.searchParams.append("types", "url");
-    idurl.searchParams.append("source", "tidal");
+    idurl.searchParams.append("source", "kuwo");
     idurl.searchParams.append("id", qqid);
     idurl.searchParams.append("br", "999");
     console.log("请求的音乐idUrl:", idurl)
