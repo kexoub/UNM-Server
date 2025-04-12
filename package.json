@@ -22,7 +22,6 @@
     "koa-views": "^8.1.0",
     "koa2-cors": "^2.0.6",
     "nodemon": "^2.0.22",
-    "python": "^0.0.4",
-    "youtube-dl": "^3.5.0"
+    "python": "^0.0.4"
   }
 }
