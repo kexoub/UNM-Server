@@ -22,6 +22,11 @@ router.get("/test", async (ctx) => {
     "kuwo",
     "migu",
     "pyncmd",
+    "bilibili",
+    "youtube",
+    "youtube-dl",
+    "yt-dlp",
+    "qq",
   ]).then((res) => {
     return res;
   });
