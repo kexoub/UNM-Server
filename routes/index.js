@@ -19,14 +19,14 @@ router.get("/info", async (ctx) => {
 router.get("/test", async (ctx) => {
   const data = await match(1962165898, [
     "kugou",
-    "kuwo",
+    "qq",
     "migu",
     "pyncmd",
     "bilibili",
     "youtube",
     "youtube-dl",
     "yt-dlp",
-    "qq",
+    "kuwo",
   ]).then((res) => {
     return res;
   });
